@@ -5,50 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Gráficos</title>
     <style>
-        /* Estilos CSS para la lista de gráficos */
         .grafico {
-            margin-bottom: 20px; /* Espacio entre gráficos */
-            border: 1px solid #ccc; /* Borde alrededor de cada gráfico */
-            padding: 10px; /* Espacio interno dentro del borde */
-            display: none; /* Ocultar por defecto */
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            display: none;
         }
     </style>
     <script>
-        function mostrarGrafico() {
-            var selector = document.getElementById('selectorAgencia');
-            var valorSeleccionado = selector.value;
-            var graficos = document.getElementsByClassName('grafico');
+        // Lista de nombres de archivos para los gráficos
+        const agencias = [
+            "agencia1.html", "agencia2.html", "agencia3.html", "agencia4.html", "agencia5.html",
+            "agencia6.html", "agencia7.html", "agencia8.html", "agencia9.html", "agencia10.html",
+            "agencia11.html", "agencia12.html"
+        ];
 
-            for (var i = 0; i < graficos.length; i++) {
-                graficos[i].style.display = 'none';  // Ocultar todos los gráficos
+        function inicializar() {
+            const selector = document.getElementById('selectorAgencia');
+            const contenedorGraficos = document.getElementById('contenedorGraficos');
+
+            // Generar opciones del selector
+            agencias.forEach((agencia, index) => {
+                const option = document.createElement('option');
+                option.value = `agencia${index + 1}`;
+                option.textContent = `AGENCIA ${index + 1}`;
+                selector.appendChild(option);
+            });
+
+            // Generar divs de gráficos
+            agencias.forEach((agencia, index) => {
+                const div = document.createElement('div');
+                div.id = `agencia${index + 1}`;
+                div.className = 'grafico';
+                div.innerHTML = `
+                    <h2><center>AGENCIA ${index + 1}</center></h2>
+                    <iframe src="${agencia}" width="1000" height="500" frameborder="0"></iframe>
+                `;
+                contenedorGraficos.appendChild(div);
+            });
+        }
+
+        function mostrarGrafico() {
+            const selector = document.getElementById('selectorAgencia');
+            const valorSeleccionado = selector.value;
+            const graficos = document.getElementsByClassName('grafico');
+
+            for (let grafico of graficos) {
+                grafico.style.display = 'none';
             }
 
-            var graficoSeleccionado = document.getElementById(valorSeleccionado);
+            const graficoSeleccionado = document.getElementById(valorSeleccionado);
             if (graficoSeleccionado) {
-                graficoSeleccionado.style.display = 'block';  // Mostrar el gráfico seleccionado
+                graficoSeleccionado.style.display = 'block';
             }
         }
     </script>
 </head>
-<body>
+<body onload="inicializar()">
     <h1>Seleccione una Agencia</h1>
     <select id="selectorAgencia" onchange="mostrarGrafico()">
         <option value="">Seleccione una agencia</option>
-        <option value="agencia1">AGENCIA 1</option>
-        <option value="agencia2">AGENCIA 2</option>
     </select>
 
-    <!-- Primer gráfico -->
-    <div id="agencia1" class="grafico">
-        <h2><center>AGENCIA 1</center></h2>
-        <iframe src="mi_grafico.html" width="1000" height="500" frameborder="0"></iframe>
-    </div>
-
-    <!-- Segundo gráfico -->
-    <div id="agencia2" class="grafico">
-        <h2><center>AGENCIA 2</center></h2>
-        <iframe src="mi_grafico.html" width="1000" height="500" frameborder="0"></iframe>
-    </div>
+    <div id="contenedorGraficos"></div>
 
 </body>
 </html>
