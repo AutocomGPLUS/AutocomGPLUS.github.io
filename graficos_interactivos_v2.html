@@ -13,15 +13,16 @@
         }
     </style>
     <script>
-        // Lista de nombres de archivos para los gráficos
-        const agencias = [
-            "mi_grafico.html", "mi_grafico.html", "mi_grafico.html",
-             "mi_grafico.html", "mi_grafico.html", "mi_grafico.html",
-              "mi_grafico.html", "mi_grafico.html", "mi_grafico.html",
-               "mi_grafico.html", "mi_grafico.html", "mi_grafico.html"
-        ];
+        function cargarGraficos() {
+            fetch('archivos.json')
+                .then(response => response.json())
+                .then(data => {
+                    inicializar(data.graficos);
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-        function inicializar() {
+        function inicializar(agencias) {
             const selector = document.getElementById('selectorAgencia');
             const contenedorGraficos = document.getElementById('contenedorGraficos');
 
@@ -62,7 +63,7 @@
         }
     </script>
 </head>
-<body onload="inicializar()">
+<body onload="cargarGraficos()">
     <h1>Seleccione una Agencia</h1>
     <select id="selectorAgencia" onchange="mostrarGrafico()">
         <option value="">Seleccione una agencia</option>
