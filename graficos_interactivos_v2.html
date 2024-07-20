@@ -3,18 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Gráficos</title>
+    <title>Gráficos Interactivos de Agencias</title>
     <style>
-        .grafico {
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        #selectorAgencia {
+            display: block;
+            width: 100%;
             padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .grafico {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
             display: none;
+        }
+        .grafico h2 {
+            color: #3498db;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            iframe {
+                height: 300px;
+            }
         }
     </style>
     <script>
         function cargarGraficos() {
-            fetch('archivos.json')
+            fetch('graficos_config.json')
                 .then(response => response.json())
                 .then(data => {
                     inicializar(data.graficos);
@@ -26,22 +69,20 @@
             const selector = document.getElementById('selectorAgencia');
             const contenedorGraficos = document.getElementById('contenedorGraficos');
 
-            // Generar opciones del selector
             agencias.forEach((agencia, index) => {
                 const option = document.createElement('option');
                 option.value = `agencia${index + 1}`;
-                option.textContent = `AGENCIA ${index + 1}`;
+                option.textContent = `Agencia ${index + 1}`;
                 selector.appendChild(option);
             });
 
-            // Generar divs de gráficos
             agencias.forEach((agencia, index) => {
                 const div = document.createElement('div');
                 div.id = `agencia${index + 1}`;
                 div.className = 'grafico';
                 div.innerHTML = `
-                    <h2><center>AGENCIA ${index + 1}</center></h2>
-                    <iframe src="${agencia}" width="1000" height="500" frameborder="0"></iframe>
+                    <h2>Agencia ${index + 1}</h2>
+                    <iframe src="${agencia}" frameborder="0"></iframe>
                 `;
                 contenedorGraficos.appendChild(div);
             });
@@ -64,12 +105,11 @@
     </script>
 </head>
 <body onload="cargarGraficos()">
-    <h1>Seleccione una Agencia</h1>
+    <h1>Gráficos Interactivos de Agencias</h1>
     <select id="selectorAgencia" onchange="mostrarGrafico()">
         <option value="">Seleccione una agencia</option>
     </select>
 
     <div id="contenedorGraficos"></div>
-
 </body>
 </html>
