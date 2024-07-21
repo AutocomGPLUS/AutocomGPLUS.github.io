@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GarantiPLUS - Gráficos Interactivos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #222;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .logo-text {
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .logo-text span {
+            color: #9ACA3C;
+        }
+        .nav-menu {
+            display: flex;
+        }
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .nav-menu a.active {
+            color: #9ACA3C;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #4A4A4A;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+        #selectorAgencia {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            background-color: #8CC63F;
+            color: white;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        #selectorAgencia:hover {
+            background-color: #7AB62F;
+        }
+
+        #selectorAgencia option {
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 10px;
+        }
+
+        #selectorAgencia option:hover,
+        #selectorAgencia option:focus,
+        #selectorAgencia option:active {
+            background-color: #8CC63F !important;
+            color: white !important;
+        }
+   
+
+        #selectorAgencia::-ms-expand {
+            display: none;
+        }
+
+        #selectorAgencia option:checked,
+        #selectorAgencia option:hover {
+            box-shadow: 0 0 10px 100px #8CC63F inset;
+            background-color: #8CC63F;
+            color: white;
+        }
+        .grafico {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: none;
+        }
+        .grafico h2 {
+            color: #4A4A4A;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+            }
+            .nav-menu {
+                margin-top: 10px;
+            }
+            .nav-menu a {
+                margin: 0 10px;
+            }
+            iframe {
+                height: 300px;
+            }
+        }
+    </style>
+
+    <script>
+
+        function cargarGraficos() {
+            fetch('graficos_config.json')
+                .then(response => response.json())
+                .then(data => {
+                    inicializar(data.graficos);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function inicializar(agencias) {
+            const selector = document.getElementById('selectorAgencia');
+            const contenedorGraficos = document.getElementById('contenedorGraficos');
+
+            agencias.forEach((agencia, index) => {
+                const option = document.createElement('option');
+                option.value = `agencia${index + 1}`;
+                option.textContent = `${agencia.replace('.html', '')}`;
+                selector.appendChild(option);
+            });
+
+            agencias.forEach((agencia, index) => {
+                const div = document.createElement('div');
+                div.id = `agencia${index + 1}`;
+                div.className = 'grafico';
+                div.innerHTML = `
+                    
+                    <iframe src="${agencia}" frameborder="0"></iframe>
+                `;
+                contenedorGraficos.appendChild(div);
+            });
+        }
+
+        function mostrarGrafico() {
+            const selector = document.getElementById('selectorAgencia');
+            const valorSeleccionado = selector.value;
+            const graficos = document.getElementsByClassName('grafico');
+
+            for (let grafico of graficos) {
+                grafico.style.display = 'none';
+            }
+
+            const graficoSeleccionado = document.getElementById(valorSeleccionado);
+            if (graficoSeleccionado) {
+                graficoSeleccionado.style.display = 'block';
+            }
+        }
+
+    </script>
+</head>
+<body onload="cargarGraficos()">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-text">Garanti<span>PLUS</span></div>
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+        <div class="logo">
+        </div>
+
+        <div class="logo">
+            <img src="autocom.png" alt="Logo" >
+        </div>
+        <div class="nav-menu">
+
+        </div>
+    </div>
+    <div class="content">
+        <h1>SEGUIMIENTO RENOVACIONES</h1>
+        <select id="selectorAgencia" onchange="mostrarGrafico()">
+            <option value="">Seleccione una agencia</option>
+        </select>
+        <div id="contenedorGraficos"></div>
+    </div>
+</body>
+</html>
+
