@@ -154,7 +154,7 @@
             agencias.forEach((agencia, index) => {
                 const option = document.createElement('option');
                 option.value = `agencia${index + 1}`;
-                option.textContent = `Agencia ${index + 1}`;
+                option.textContent = `${agencia}`;
                 selector.appendChild(option);
             });
 
@@ -163,7 +163,7 @@
                 div.id = `agencia${index + 1}`;
                 div.className = 'grafico';
                 div.innerHTML = `
-                    <h2>Agencia ${index + 1}</h2>
+                    
                     <iframe src="${agencia}" frameborder="0"></iframe>
                 `;
                 contenedorGraficos.appendChild(div);
