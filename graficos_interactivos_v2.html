@@ -154,7 +154,7 @@
             agencias.forEach((agencia, index) => {
                 const option = document.createElement('option');
                 option.value = `agencia${index + 1}`;
-                option.textContent = `${agencia}`;
+                option.textContent = `${agencia.replace('.html', '')}`;
                 selector.appendChild(option);
             });
 
