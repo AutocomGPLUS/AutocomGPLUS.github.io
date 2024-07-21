@@ -69,16 +69,36 @@
             background-color: #8CC63F;
             color: white;
             cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
         }
+
         #selectorAgencia:hover {
             background-color: #7AB62F;
         }
+
         #selectorAgencia option {
             background-color: #f4f4f4;
             color: #333;
+            padding: 10px;
         }
+
         #selectorAgencia option:hover,
-        #selectorAgencia option:focus {
+        #selectorAgencia option:focus,
+        #selectorAgencia option:active {
+            background-color: #8CC63F !important;
+            color: white !important;
+        }
+   
+
+        #selectorAgencia::-ms-expand {
+            display: none;
+        }
+
+        #selectorAgencia option:checked,
+        #selectorAgencia option:hover {
+            box-shadow: 0 0 10px 100px #8CC63F inset;
             background-color: #8CC63F;
             color: white;
         }
