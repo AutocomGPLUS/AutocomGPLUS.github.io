@@ -136,66 +136,67 @@
         }
     </style>
 
-    <script>
+<script>
+    function cargarGraficos() {
+        fetch('graficos_config.json')
+            .then(response => response.json())
+            .then(data => {
+                inicializar(data.graficos, data.graficosAdicionales);
+            })
+            .catch(error => console.error('Error:', error));
+    }
 
-        function cargarGraficos() {
-            fetch('graficos_config.json')
-                .then(response => response.json())
-                .then(data => {
-                    inicializar(data.graficos);
-                })
-                .catch(error => console.error('Error:', error));
+    function inicializar(agencias, graficosAdicionales) {
+        const selector = document.getElementById('selectorAgencia');
+        const contenedorGraficos = document.getElementById('contenedorGraficos');
+
+        agencias.forEach((agencia, index) => {
+            const option = document.createElement('option');
+            option.value = `agencia${index + 1}`;
+            option.textContent = `${agencia.replace('.html', '')}`;
+            selector.appendChild(option);
+        });
+
+        agencias.forEach((agencia, index) => {
+            const divPrincipal = document.createElement('div');
+            divPrincipal.id = `agencia${index + 1}`;
+            divPrincipal.className = 'grafico';
+            
+            // Crear el div para el gráfico principal
+            const divGraficoPrincipal = document.createElement('div');
+            divGraficoPrincipal.innerHTML = `
+                <iframe src="${agencia}" frameborder="0"></iframe>
+            `;
+            
+            // Crear el div para el gráfico adicional
+            const divGraficoAdicional = document.createElement('div');
+            divGraficoAdicional.innerHTML = `
+                <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0"></iframe>
+            `;
+            
+            // Añadir ambos divs al div principal
+            divPrincipal.appendChild(divGraficoPrincipal);
+            divPrincipal.appendChild(divGraficoAdicional);
+            
+            contenedorGraficos.appendChild(divPrincipal);
+        });
+    }
+
+    function mostrarGrafico() {
+        const selector = document.getElementById('selectorAgencia');
+        const valorSeleccionado = selector.value;
+        const graficos = document.getElementsByClassName('grafico');
+
+        for (let grafico of graficos) {
+            grafico.style.display = 'none';
         }
 
-        function inicializar(agencias) {
-            const selector = document.getElementById('selectorAgencia');
-            const contenedorGraficos = document.getElementById('contenedorGraficos');
-
-            agencias.forEach((agencia, index) => {
-                const option = document.createElement('option');
-                option.value = `agencia${index + 1}`;
-                option.textContent = `${agencia.replace('.html', '')}`;
-                selector.appendChild(option);
-            });
-
-            agencias.forEach((agencia, index) => {
-                const div = document.createElement('div');
-                div.id = `agencia${index + 1}`;
-                div.className = 'grafico';
-                div.innerHTML = `
-                    
-                    <iframe src="${agencia}" frameborder="0"></iframe>
-                `;
-                contenedorGraficos.appendChild(div);
-            });
-            agencias.forEach((agencia, index) => {
-                const div = document.createElement('div');
-                div.id = `agencia${index + 1}`;
-                div.className = 'grafico';
-                div.innerHTML = `
-                    
-                    <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0"></iframe>
-                `;
-                contenedorGraficos.appendChild(div);
-            });
+        const graficoSeleccionado = document.getElementById(valorSeleccionado);
+        if (graficoSeleccionado) {
+            graficoSeleccionado.style.display = 'block';
         }
-
-        function mostrarGrafico() {
-            const selector = document.getElementById('selectorAgencia');
-            const valorSeleccionado = selector.value;
-            const graficos = document.getElementsByClassName('grafico');
-
-            for (let grafico of graficos) {
-                grafico.style.display = 'none';
-            }
-
-            const graficoSeleccionado = document.getElementById(valorSeleccionado);
-            if (graficoSeleccionado) {
-                graficoSeleccionado.style.display = 'block';
-            }
-        }
-
-    </script>
+    }
+</script>
 </head>
 <body onload="cargarGraficos()">
     <div class="header">
