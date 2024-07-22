@@ -168,6 +168,16 @@
                 `;
                 contenedorGraficos.appendChild(div);
             });
+            agencias.forEach((agencia, index) => {
+                const div = document.createElement('div');
+                div.id = `agencia${index + 1}`;
+                div.className = 'grafico';
+                div.innerHTML = `
+                    
+                    <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0"></iframe>
+                `;
+                contenedorGraficos.appendChild(div);
+            });
         }
 
         function mostrarGrafico() {
