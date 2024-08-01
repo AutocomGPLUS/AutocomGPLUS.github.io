@@ -135,78 +135,96 @@
             }
         }
     </style>
+    
 
-<script>
-    function cargarGraficos() {
-        fetch('graficos_config.json')
-            .then(response => response.json())
-            .then(data => {
-                inicializar(data.graficos, data.graficosAdicionales);
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    function inicializar(agencias, graficosAdicionales) {
-        const selector = document.getElementById('selectorAgencia');
-        const contenedorGraficos = document.getElementById('contenedorGraficos');
-
-        agencias.forEach((agencia, index) => {
-            const option = document.createElement('option');
-            option.value = `agencia${index + 1}`;
-            option.textContent = `${agencia.replace('.html', '')}`;
-            selector.appendChild(option);
-        });
-
-        agencias.forEach((agencia, index) => {
-            const divPrincipal = document.createElement('div');
-            divPrincipal.id = `agencia${index + 1}`;
-            divPrincipal.className = 'grafico';
-            
-            // Crear el div para el gráfico principal
-            const divGraficoPrincipal = document.createElement('div');
-            divGraficoPrincipal.innerHTML = `
-            
-                <iframe src="${agencia}" frameborder="0"></iframe>
-            `;
-            
-            // Crear el div para el gráfico adicional
-            const divGraficoAdicional = document.createElement('div');
-            divGraficoAdicional.innerHTML = `
-    <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0" id="miIframe2"></iframe>
-`;
-
-
-            // Crear el div para el gráfico adicional
-            const divGraficoAdicional2 = document.createElement('div');
-            divGraficoAdicional2.innerHTML =  `
-    <iframe src="${agencia.replace('.html', '_indicador_renovados.html')}" frameborder="0" id="miIframe3"></iframe>
-`;
-
-            
-            // Añadir ambos divs al div principal
-            divPrincipal.appendChild(divGraficoPrincipal);
-            divPrincipal.appendChild(divGraficoAdicional);
-            divPrincipal.appendChild(divGraficoAdicional2);
-            
-            contenedorGraficos.appendChild(divPrincipal);
-        });
-    }
-
-    function mostrarGrafico() {
-        const selector = document.getElementById('selectorAgencia');
-        const valorSeleccionado = selector.value;
-        const graficos = document.getElementsByClassName('grafico');
-
-        for (let grafico of graficos) {
-            grafico.style.display = 'none';
+        <script>
+        function cargarGraficos() {
+            fetch('graficos_config.json')
+                .then(response => response.json())
+                .then(data => {
+                    inicializar(data.graficos, data.graficosAdicionales);
+                })
+                .catch(error => console.error('Error:', error));
         }
-
-        const graficoSeleccionado = document.getElementById(valorSeleccionado);
-        if (graficoSeleccionado) {
-            graficoSeleccionado.style.display = 'block';
+    
+        function inicializar(agencias, graficosAdicionales) {
+            const selector = document.getElementById('selectorAgencia');
+            const contenedorGraficos = document.getElementById('contenedorGraficos');
+    
+            agencias.forEach((agencia, index) => {
+                const option = document.createElement('option');
+                option.value = `agencia${index + 1}`;
+                option.textContent = `${agencia.replace('.html', '')}`;
+                selector.appendChild(option);
+            });
+    
+            agencias.forEach((agencia, index) => {
+                const divPrincipal = document.createElement('div');
+                divPrincipal.id = `agencia${index + 1}`;
+                divPrincipal.className = 'grafico';
+                
+                const divGraficoPrincipal = document.createElement('div');
+                divGraficoPrincipal.innerHTML = `
+                    <iframe src="${agencia}" frameborder="0" id="iframe-principal-${index}"></iframe>
+                `;
+                
+                const divGraficoAdicional = document.createElement('div');
+                divGraficoAdicional.innerHTML = `
+                    <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0" id="iframe-adicional-${index}"></iframe>
+                `;
+    
+                const divGraficoAdicional2 = document.createElement('div');
+                divGraficoAdicional2.innerHTML = `
+                    <iframe src="${agencia.replace('.html', '_indicador_renovados.html')}" frameborder="0" id="iframe-adicional2-${index}"></iframe>
+                `;
+                
+                divPrincipal.appendChild(divGraficoPrincipal);
+                divPrincipal.appendChild(divGraficoAdicional);
+                divPrincipal.appendChild(divGraficoAdicional2);
+                
+                contenedorGraficos.appendChild(divPrincipal);
+    
+                // Ajustar altura de los iframes
+                ajustarAlturaIframe(`iframe-principal-${index}`);
+                ajustarAlturaIframe(`iframe-adicional-${index}`);
+                ajustarAlturaIframe(`iframe-adicional2-${index}`);
+            });
         }
-    }
-</script>
+    
+        function mostrarGrafico() {
+            const selector = document.getElementById('selectorAgencia');
+            const valorSeleccionado = selector.value;
+            const graficos = document.getElementsByClassName('grafico');
+    
+            for (let grafico of graficos) {
+                grafico.style.display = 'none';
+            }
+    
+            const graficoSeleccionado = document.getElementById(valorSeleccionado);
+            if (graficoSeleccionado) {
+                graficoSeleccionado.style.display = 'block';
+            }
+        }
+    
+        function ajustarAlturaIframe(iframeId) {
+            const iframe = document.getElementById(iframeId);
+            if (iframe) {
+                iframe.onload = function() {
+                    try {
+                        const height = this.contentWindow.document.body.scrollHeight;
+                        this.style.height = height + 'px';
+                    } catch (e) {
+                        console.error('Error al ajustar altura del iframe:', e);
+                        this.style.height = '300px'; // Altura por defecto si falla
+                    }
+                };
+            }
+        }
+        </script>
+
+
+
+
 </head>
 <body onload="cargarGraficos()">
     <div class="header">
