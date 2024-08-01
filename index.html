@@ -165,14 +165,9 @@
             // Crear el div para el gráfico principal
             const divGraficoPrincipal = document.createElement('div');
             divGraficoPrincipal.innerHTML = `
-    <iframe src="${agencia}" frameborder="0" id="miIframe1"></iframe>
-`;
-
-// Agregue este script después de crear el iframe
-const iframe1 = document.getElementById('miIframe1');
-iframe.onload = function() {
-    this.style.height = this.contentWindow.document.body.scrollHeight + 'px';
-};
+            
+                <iframe src="${agencia}" frameborder="0"></iframe>
+            `;
             
             // Crear el div para el gráfico adicional
             const divGraficoAdicional = document.createElement('div');
@@ -192,11 +187,6 @@ iframe.onload = function() {
     <iframe src="${agencia.replace('.html', '_indicador_renovados.html')}" frameborder="0" id="miIframe3"></iframe>
 `;
 
-// Agregue este script después de crear el iframe
-const iframe3 = document.getElementById('miIframe3');
-iframe.onload = function() {
-    this.style.height = this.contentWindow.document.body.scrollHeight + 'px';
-};
             
             // Añadir ambos divs al div principal
             divPrincipal.appendChild(divGraficoPrincipal);
