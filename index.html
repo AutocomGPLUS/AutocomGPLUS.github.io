@@ -173,10 +173,17 @@
             divGraficoAdicional.innerHTML = `
                 <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0"></iframe>
             `;
+
+            // Crear el div para el gráfico adicional
+            const divGraficoAdicional2 = document.createElement('div');
+            divGraficoAdicional.innerHTML = `
+                <iframe src="${agencia.replace('.html', '_indicador_renovados.html')}" frameborder="0"></iframe>
+            `;
             
             // Añadir ambos divs al div principal
             divPrincipal.appendChild(divGraficoPrincipal);
             divPrincipal.appendChild(divGraficoAdicional);
+            divPrincipal.appendChild(divGraficoAdicional2);
             
             contenedorGraficos.appendChild(divPrincipal);
         });
