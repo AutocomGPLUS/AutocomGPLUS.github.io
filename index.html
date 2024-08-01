@@ -171,12 +171,28 @@
             // Crear el div para el gráfico adicional
             const divGraficoAdicional = document.createElement('div');
             divGraficoAdicional.innerHTML = `
+            <style>
+        iframe {
+            width: 100%;
+            height: 300px; /* Ajuste según sea necesario */
+            max-height: 100%;
+            display: block;
+        }
+    </style>
                 <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0"></iframe>
             `;
 
             // Crear el div para el gráfico adicional
             const divGraficoAdicional2 = document.createElement('div');
             divGraficoAdicional2.innerHTML = `
+            <style>
+        iframe {
+            width: 100%;
+            height: 300px; /* Ajuste según sea necesario */
+            max-height: 100%;
+            display: block;
+        }
+    </style>
                 <iframe src="${agencia.replace('.html', '_indicador_renovados.html')}" frameborder="0"></iframe>
             `;
             
