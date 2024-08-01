@@ -175,11 +175,6 @@
     <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0" id="miIframe2"></iframe>
 `;
 
-// Agregue este script después de crear el iframe
-const iframe2 = document.getElementById('miIframe2');
-iframe.onload = function() {
-    this.style.height = this.contentWindow.document.body.scrollHeight + 'px';
-};
 
             // Crear el div para el gráfico adicional
             const divGraficoAdicional2 = document.createElement('div');
