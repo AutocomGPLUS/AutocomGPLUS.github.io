@@ -134,63 +134,103 @@
                 height: 300px;
             }
         }
+
+        #selectorFecha {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            background-color: #8CC63F;
+            color: white;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        #selectorFecha:hover {
+            background-color: #7AB62F;
+        }
+
+        #selectorFecha option {
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 10px;
+        }
     </style>
     
 
 <script>
+    let todasLasAgencias = [];
     function cargarGraficos() {
         fetch('graficos_config.json')
             .then(response => response.json())
             .then(data => {
-                inicializar(data.graficos, data.graficosAdicionales);
+                todasLasAgencias = data.graficos;
+                inicializar(data.graficos, data.fechas);
             })
             .catch(error => console.error('Error:', error));
     }
-
-    function inicializar(agencias, graficosAdicionales) {
-        const selector = document.getElementById('selectorAgencia');
+    function inicializar(agencias, fechas) {
+        const selectorFecha = document.getElementById('selectorFecha');
+        const selectorAgencia = document.getElementById('selectorAgencia');
         const contenedorGraficos = document.getElementById('contenedorGraficos');
-
-        agencias.forEach((agencia, index) => {
+// Llenar el selector de fechas
+    fechas.forEach(fecha => {
             const option = document.createElement('option');
-            option.value = `agencia${index + 1}`;
-            option.textContent = `${agencia.replace('.html', '')}`;
-            selector.appendChild(option);
+            option.value = fecha;
+            option.textContent = fecha;
+            selectorFecha.appendChild(option);
         });
-
+        // Evento para cuando se cambia la fecha
+        selectorFecha.addEventListener('change', function() {
+            actualizarSelectorAgencias(this.value);
+        });
+        
+        // Crear divs para todos los gráficos
         agencias.forEach((agencia, index) => {
             const divPrincipal = document.createElement('div');
             divPrincipal.id = `agencia${index + 1}`;
             divPrincipal.className = 'grafico';
             
-            // Crear el div para el gráfico principal
+            const fechaGrafico = agencia.split('_').pop().replace('.html', '');
+            
             const divGraficoPrincipal = document.createElement('div');
-            divGraficoPrincipal.innerHTML = `
+            divGraficoPrincipal.innerHTML = `<iframe src="${agencia}" frameborder="0"></iframe>`;
             
-                <iframe src="${agencia}" frameborder="0"></iframe>
-            `;
-            
-            // Crear el div para el gráfico adicional
             const divGraficoAdicional = document.createElement('div');
-            divGraficoAdicional.innerHTML = `
-    <iframe src="${agencia.replace('.html', '_indicador.html')}" frameborder="0" id="miIframe2"></iframe>
-`;
+            divGraficoAdicional.innerHTML = `<iframe src="${agencia.replace('.html', `_indicador_${fechaGrafico}.html`)}" frameborder="0" id="miIframe2"></iframe>`;
 
-
-            // Crear el div para el gráfico adicional
             const divGraficoAdicional2 = document.createElement('div');
-            divGraficoAdicional2.innerHTML =  `
-    <iframe src="${agencia.replace('.html', '_indicador_renovados.html')}" frameborder="0" id="miIframe3"></iframe>
-`;
-
+            divGraficoAdicional2.innerHTML = `<iframe src="${agencia.replace('.html', `_indicador_renovados_${fechaGrafico}.html`)}" frameborder="0" id="miIframe3"></iframe>`;
             
-            // Añadir ambos divs al div principal
             divPrincipal.appendChild(divGraficoPrincipal);
             divPrincipal.appendChild(divGraficoAdicional);
             divPrincipal.appendChild(divGraficoAdicional2);
             
             contenedorGraficos.appendChild(divPrincipal);
         });
+    }
+    function actualizarSelectorAgencias(fechaSeleccionada) {
+        const selectorAgencia = document.getElementById('selectorAgencia');
+        selectorAgencia.innerHTML = '<option value="">Seleccione una agencia</option>';
+
+        const agenciasFiltradas = todasLasAgencias.filter(agencia => agencia.includes(fechaSeleccionada));
+
+        agenciasFiltradas.forEach((agencia, index) => {
+            const option = document.createElement('option');
+            option.value = `agencia${index + 1}`;
+            option.textContent = agencia.replace('.html', '').replace(`_${fechaSeleccionada}`, '');
+            selectorAgencia.appendChild(option);
+        });
+
+        // Ocultar todos los gráficos después de cambiar la fecha
+        const graficos = document.getElementsByClassName('grafico');
+        for (let grafico of graficos) {
+            grafico.style.display = 'none';
+        }
     }
 
     function mostrarGrafico() {
@@ -256,6 +296,9 @@
     </div>
     <div class="content">
         <h1>SEGUIMIENTO RENOVACIONES</h1>
+        <select id="selectorFecha">
+            <option value="">Seleccione una fecha</option>
+        </select>
         <select id="selectorAgencia" onchange="mostrarGrafico()">
             <option value="">Seleccione una agencia</option>
         </select>
