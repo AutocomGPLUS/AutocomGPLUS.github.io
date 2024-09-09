@@ -201,10 +201,10 @@
             divGraficoPrincipal.innerHTML = `<iframe src="${agencia}" frameborder="0"></iframe>`;
             
             const divGraficoAdicional = document.createElement('div');
-            divGraficoAdicional.innerHTML = `<iframe src="${agencia.replace('.html', `_indicador_${fechaGrafico}.html`)}" frameborder="0" id="miIframe2"></iframe>`;
+            divGraficoAdicional.innerHTML = `<iframe src="${agencia.replace( `_${fechaGrafico}`,'').replace('.html', `_indicador_${fechaGrafico}.html`)}" frameborder="0" id="miIframe2"></iframe>`;
 
             const divGraficoAdicional2 = document.createElement('div');
-            divGraficoAdicional2.innerHTML = `<iframe src="${agencia.replace('.html', `_indicador_renovados_${fechaGrafico}.html`)}" frameborder="0" id="miIframe3"></iframe>`;
+            divGraficoAdicional2.innerHTML = `<iframe src="${agencia.replace( `_${fechaGrafico}`,'').replace('.html', `_indicador_renovados_${fechaGrafico}.html`)}" frameborder="0" id="miIframe3"></iframe>`;
             
             divPrincipal.appendChild(divGraficoPrincipal);
             divPrincipal.appendChild(divGraficoAdicional);
